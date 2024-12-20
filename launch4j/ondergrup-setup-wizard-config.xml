@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\hidir\OneDrive\Masaüstü\Setup.jar</jar>
+  <outfile>C:\Users\hidir\OneDrive\Masaüstü\Önder Setup Wizard.exe</outfile>
+  <errTitle>Programın çalışabilmesi için JRE 1.8.0 ve JDK 12.0.2 Gereklidir !</errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>high</priority>
+  <downloadUrl>https://www.oracle.com/tr/java/technologies/javase/jdk12-archive-downloads.html</downloadUrl>
+  <supportUrl>https://github.com/hidirektor</supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>true</restartOnCrash>
+  <manifest></manifest>
+  <icon>C:\Users\hidir\IdeaProjects\ondergrup-setup-wizard\src\main\resources\assets\images\logo.ico</icon>
+  <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>true</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>1.8.0</minVersion>
+    <maxVersion></maxVersion>
+    <opt>-Dfile.encoding=&quot;UTF-8&quot;</opt>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.0.0</fileVersion>
+    <txtFileVersion>1.0.0.0</txtFileVersion>
+    <fileDescription>Önder Setup Wizard</fileDescription>
+    <copyright>Halil İbrahim Direktör</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>1.0.0.0</txtProductVersion>
+    <productName>Önder Setup Wizard</productName>
+    <companyName>Önder Grup</companyName>
+    <internalName>Setup Wizard</internalName>
+    <originalFilename>Önder Setup Wizard.exe</originalFilename>
+    <trademarks></trademarks>
+    <language>TURKISH</language>
+  </versionInfo>
+</launch4jConfig>

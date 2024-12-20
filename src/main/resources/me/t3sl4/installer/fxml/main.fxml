@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" fx:controller="me.t3sl4.installer.controller.MainController" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <HBox fx:id="topHBox" prefHeight="21.0" prefWidth="600.0" style="-fx-background-color: #2B2B29;">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="closeIcon" fitHeight="12.0" fitWidth="12.0" onMouseClicked="#closeProgram" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets right="6.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../../../../assets/icons/icon_close.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="minimizeIcon" fitHeight="12.0" fitWidth="12.0" onMouseClicked="#minimizeProgram" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets right="6.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../../../../assets/icons/icon_minimize.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="expandIcon" fitHeight="12.0" fitWidth="12.0" onMouseClicked="#expandProgram" pickOnBounds="true" preserveRatio="true">
+                           <HBox.margin>
+                              <Insets right="6.0" />
+                           </HBox.margin>
+                           <image>
+                              <Image url="@../../../../assets/icons/icon_expand.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../assets/images/logo-sade.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="8.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Label text="ÖnderGrup Setup Wizard" textFill="#9e9e9e" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <AnchorPane prefHeight="382.0" prefWidth="600.0" style="-fx-background-color: #F9F871;">
+               <children>
+                  <ImageView fitHeight="97.0" fitWidth="200.0" layoutX="200.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/onder_grup_main_2.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="70.0" layoutY="96.0" prefHeight="110.0" prefWidth="460.0" text="Kurulum sihirbazına hoşgeldiniz. Önder Launcher ve Hydraulic Tool kurulumu için lütfen aşağıdaki ikonu sağ taraftaki klasörün içine sürükleyip bırakın." textAlignment="CENTER" textFill="#170b0b" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <AnchorPane layoutX="81.0" layoutY="191.0" prefHeight="181.0" prefWidth="450.0" style="-fx-background-color: rgba(158, 158, 158, 0.5);">
+                     <children>
+                        <ImageView fitHeight="57.0" fitWidth="76.0" layoutX="197.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../assets/icons/icon_right_arrow.png" />
+                           </image>
+                        </ImageView>
+                        <AnchorPane fx:id="applicationAnchor" layoutX="20.0" layoutY="29.0" prefHeight="124.0" prefWidth="151.0">
+                           <children>
+                              <ImageView fitHeight="84.0" fitWidth="134.0" layoutX="33.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../assets/images/logo-launcher.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="23.0" layoutY="97.0" text="Önder Launcher.exe" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="destinationAnchor" layoutX="275.0" layoutY="29.0" prefHeight="124.0" prefWidth="151.0">
+                           <children>
+                              <ImageView fitHeight="84.0" fitWidth="134.0" layoutX="34.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../assets/icons/icon_folder_mac.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="userFolderPath" alignment="CENTER" layoutY="93.0" prefHeight="17.0" prefWidth="151.0" text="../OnderGrup" wrapText="true" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
