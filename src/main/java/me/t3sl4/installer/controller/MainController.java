@@ -95,8 +95,8 @@ public class MainController implements Initializable {
         darkenEffect.setBrightness(-0.5); // Karartma seviyesi
 
         for (ImageView imageView : imageViews) {
-            imageView.setOnMouseEntered(_ -> imageView.setEffect(darkenEffect));
-            imageView.setOnMouseExited(_ -> imageView.setEffect(null));
+            imageView.setOnMouseEntered(event -> imageView.setEffect(darkenEffect));
+            imageView.setOnMouseExited(event -> imageView.setEffect(null));
         }
     }
 
