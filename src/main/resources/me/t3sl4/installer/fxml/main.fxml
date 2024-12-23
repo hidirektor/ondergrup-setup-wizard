@@ -2,15 +2,16 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" fx:controller="me.t3sl4.installer.controller.MainController" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.t3sl4.installer.controller.MainController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -64,12 +65,12 @@
             </HBox>
             <AnchorPane prefHeight="382.0" prefWidth="600.0" style="-fx-background-color: #F9F871;">
                <children>
-                  <ImageView fitHeight="97.0" fitWidth="200.0" layoutX="200.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="mainLogo" fitHeight="97.0" fitWidth="200.0" layoutX="200.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../assets/images/onder_grup_main_2.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="70.0" layoutY="96.0" prefHeight="110.0" prefWidth="460.0" text="Kurulum sihirbazına hoşgeldiniz. Önder Launcher ve Hydraulic Tool kurulumu için lütfen aşağıdaki ikonu sağ taraftaki klasörün içine sürükleyip bırakın." textAlignment="CENTER" textFill="#170b0b" wrapText="true">
+                  <Label fx:id="mainLabel" layoutX="70.0" layoutY="96.0" prefHeight="110.0" prefWidth="460.0" text="Kurulum sihirbazına hoşgeldiniz. Önder Launcher ve Hydraulic Tool kurulumu için lütfen aşağıdaki ikonu sağ taraftaki klasörün içine sürükleyip bırakın." textAlignment="CENTER" textFill="#170b0b" wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -107,5 +108,51 @@
             </AnchorPane>
          </children>
       </VBox>
+      <Pane fx:id="downloadProgressPane" layoutY="19.0" prefHeight="381.0" prefWidth="600.0" style="-fx-background-color: rgba(0, 0, 0, 0.9);" visible="false">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="381.0" prefWidth="600.0" spacing="10.0">
+               <children>
+                  <ImageView fitHeight="97.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/onder_grup_main_2.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <Label fx:id="downloadStartedLabel" prefHeight="110.0" prefWidth="460.0" text="İndirme işlemi başlatıldı. Lütfen indirme bitene kadar programı kapatmayın." textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
+                     <children>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../assets/images/logo-launcher.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Önder Launcher" textFill="WHITE" />
+                     </children>
+                  </HBox>
+                  <ProgressBar fx:id="launcherProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
+                     <children>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../assets/images/logo-hydraulic.png" />
+                           </image>
+                        </ImageView>
+                        <Label prefHeight="0.0" prefWidth="143.0" text="Önder Grup Hydraulic Tool" textFill="WHITE" />
+                     </children>
+                  </HBox>
+                  <ProgressBar fx:id="hydraulicProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

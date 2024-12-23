@@ -1,0 +1,11 @@
+/* ProgressBar arka planı */
+.progress-bar .track {
+    -fx-background-color: #2B2B29;
+    -fx-background-radius: 2em;
+}
+
+/* ProgressBar dolum kısmı */
+.progress-bar .bar {
+    -fx-background-color: #F9F871;
+    -fx-background-radius: 2em;
+}

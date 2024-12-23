@@ -1,9 +1,11 @@
 package me.t3sl4.installer.controller;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +14,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import me.t3sl4.installer.Launcher;
 import me.t3sl4.installer.utils.FileUtil;
@@ -50,6 +53,24 @@ public class MainController implements Initializable {
     @FXML
     private AnchorPane applicationAnchor, destinationAnchor;
 
+    @FXML
+    private ImageView mainLogo;
+
+    @FXML
+    private Label mainLabel;
+
+    @FXML
+    private Pane downloadProgressPane;
+
+    @FXML
+    private ProgressBar launcherProgress, hydraulicProgress;
+
+    private static ProgressBar launcherProgressBar;
+    private static ProgressBar hydraulicProgressBar;
+
+    @FXML
+    private Label downloadStartedLabel;
+
     //Ekran büyütüp küçültme
     private boolean stageMaximized = false;
 
@@ -63,6 +84,9 @@ public class MainController implements Initializable {
             currentStage = (Stage) userFolderPath.getScene().getWindow();
             userFolderPath.setText(SystemVariables.mainPath);
         });
+
+        launcherProgressBar = launcherProgress;
+        hydraulicProgressBar = hydraulicProgress;
 
         addHoverEffect(closeIcon, minimizeIcon, expandIcon);
         setupDragAndDrop();
@@ -92,7 +116,7 @@ public class MainController implements Initializable {
 
     private void addHoverEffect(ImageView... imageViews) {
         ColorAdjust darkenEffect = new ColorAdjust();
-        darkenEffect.setBrightness(-0.5); // Karartma seviyesi
+        darkenEffect.setBrightness(-0.5);
 
         for (ImageView imageView : imageViews) {
             imageView.setOnMouseEntered(event -> imageView.setEffect(darkenEffect));
@@ -101,7 +125,6 @@ public class MainController implements Initializable {
     }
 
     private void setupDragAndDrop() {
-        // Drag start (applicationAnchor)
         applicationAnchor.setOnDragDetected(event -> {
             Dragboard dragboard = applicationAnchor.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
@@ -118,7 +141,6 @@ public class MainController implements Initializable {
             event.consume();
         });
 
-        // Drag over (destinationAnchor)
         destinationAnchor.setOnDragOver(event -> {
             if (event.getGestureSource() != destinationAnchor && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
@@ -126,14 +148,11 @@ public class MainController implements Initializable {
             event.consume();
         });
 
-        // Drop (destinationAnchor)
         destinationAnchor.setOnDragDropped(event -> {
             Dragboard dragboard = event.getDragboard();
             boolean success = false;
 
             if (dragboard.hasString()) {
-                dragboard.setDragView(null);
-                // Kurulumu başlat
                 startInstallation();
                 success = true;
             }
@@ -142,7 +161,6 @@ public class MainController implements Initializable {
             event.consume();
         });
 
-        // Drag done (applicationAnchor)
         applicationAnchor.setOnDragDone(event -> {
             if (event.getTransferMode() == TransferMode.MOVE) {
                 System.out.println("Drag işlemi tamamlandı.");
@@ -163,68 +181,82 @@ public class MainController implements Initializable {
         });
     }
 
-    public static void startInstallation() {
-        try {
-            // Ana dizini kontrol et ve oluştur
-            File mainPath = new File(SystemVariables.mainPath);
-            if (!mainPath.exists() && !mainPath.mkdirs()) {
-                throw new IOException("Ana dizin oluşturulamadı: " + SystemVariables.mainPath);
+    public void startInstallation() {
+        Platform.runLater(() -> {
+            mainLogo.setVisible(false);
+            mainLabel.setVisible(false);
+            downloadProgressPane.setVisible(true);
+        });
+
+        Task<Void> installationTask = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    File mainPath = new File(SystemVariables.mainPath);
+                    if (!mainPath.exists() && !mainPath.mkdirs()) {
+                        throw new IOException("Ana dizin oluşturulamadı: " + SystemVariables.mainPath);
+                    }
+
+                    String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+                    String launcherFileName, hydraulicFileName;
+
+                    if (os.contains("win")) {
+                        launcherFileName = "windows_Launcher.exe";
+                        hydraulicFileName = "windows_Hydraulic.exe";
+                    } else if (os.contains("mac")) {
+                        launcherFileName = "mac_Launcher.jar";
+                        hydraulicFileName = "mac_Hydraulic.jar";
+                    } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+                        launcherFileName = "unix_Launcher.jar";
+                        hydraulicFileName = "unix_Hydraulic.jar";
+                    } else {
+                        throw new UnsupportedOperationException("Bu işletim sistemi desteklenmiyor: " + os);
+                    }
+
+                    String launcherVersion = getLatestVersionFromGitHub(SystemVariables.LAUNCHER_RELEASE_URL);
+                    String hydraulicVersion = getLatestVersionFromGitHub(SystemVariables.HYDRAULIC_RELEASE_URL);
+
+                    if (hydraulicVersion == null || launcherVersion == null) {
+                        throw new IOException("GitHub sürüm bilgisi alınamadı.");
+                    }
+
+                    String launcherDownloadUrl = SystemVariables.LAUNCHER_RELEASE_BASE_URL + "/download/" + launcherVersion + "/" + launcherFileName;
+                    String hydraulicDownloadUrl = SystemVariables.HYDRAULIC_RELEASE_BASE_URL + "/download/" + hydraulicVersion + "/" + hydraulicFileName;
+
+                    File launcherFile = new File(mainPath, launcherFileName);
+                    File hydraulicFile = new File(mainPath, hydraulicFileName);
+
+                    deleteIfExists(launcherFile);
+                    deleteIfExists(hydraulicFile);
+
+                    downloadFile(launcherDownloadUrl, launcherFile, launcherProgressBar);
+                    downloadFile(hydraulicDownloadUrl, hydraulicFile, hydraulicProgressBar);
+
+                    if (os.contains("win")) {
+                        String mainPathString = mainPath.getAbsolutePath();
+                        createDesktopShortcut(launcherFileName, launcherFile.getAbsolutePath(), mainPathString);
+                        createDesktopShortcut(hydraulicFileName, hydraulicFile.getAbsolutePath(), mainPathString);
+
+                        addToStartup(launcherFileName, launcherFile.getAbsolutePath(), mainPathString);
+                        addToStartup(hydraulicFileName, hydraulicFile.getAbsolutePath(), mainPathString);
+                    }
+
+                    System.out.println("Kurulum tamamlandı!");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Kurulum sırasında bir hata oluştu: " + e.getMessage());
+                } finally {
+                    Platform.runLater(() -> {
+                        downloadStartedLabel.setText("İndirme işlemi tamamlandı. Kurulum sihirbazını kapatıp dilediğiniz programı masaüstünde ki ikonuna çift tıklayarak çalıştırabilirsiniz.");
+                    });
+                }
+                return null;
             }
+        };
 
-            // İşletim sistemi kontrolü
-            String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
-            String hydraulicFileName, launcherFileName;
-
-            if (os.contains("win")) {
-                hydraulicFileName = "windows_Hydraulic.exe";
-                launcherFileName = "windows_Launcher.exe";
-            } else if (os.contains("mac")) {
-                hydraulicFileName = "mac_Hydraulic.jar";
-                launcherFileName = "mac_Launcher.jar";
-            } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-                hydraulicFileName = "unix_Hydraulic.jar";
-                launcherFileName = "unix_Launcher.jar";
-            } else {
-                throw new UnsupportedOperationException("Bu işletim sistemi desteklenmiyor: " + os);
-            }
-
-            // GitHub'dan en son sürüm tag'lerini al
-            String hydraulicVersion = getLatestVersionFromGitHub(SystemVariables.HYDRAULIC_RELEASE_URL);
-            String launcherVersion = getLatestVersionFromGitHub(SystemVariables.LAUNCHER_RELEASE_URL);
-
-            if (hydraulicVersion == null || launcherVersion == null) {
-                throw new IOException("GitHub sürüm bilgisi alınamadı.");
-            }
-
-            // İndirilecek dosyaların URL'lerini oluştur
-            String hydraulicDownloadUrl = SystemVariables.HYDRAULIC_RELEASE_BASE_URL + "/download/" + hydraulicVersion + "/" + hydraulicFileName;
-            String launcherDownloadUrl = SystemVariables.LAUNCHER_RELEASE_BASE_URL + "/download/" + launcherVersion + "/" + launcherFileName;
-
-            // Dosyaları indir
-            File hydraulicFile = new File(mainPath, hydraulicFileName);
-            File launcherFile = new File(mainPath, launcherFileName);
-
-            deleteIfExists(hydraulicFile);
-            deleteIfExists(launcherFile);
-
-            downloadFile(hydraulicDownloadUrl, hydraulicFile);
-            downloadFile(launcherDownloadUrl, launcherFile);
-
-            // Windows için masaüstüne kısayol oluştur ve başlangıç ayarları yap
-            if (os.contains("win")) {
-                String mainPathString = mainPath.getAbsolutePath();
-                createDesktopShortcut(hydraulicFileName, hydraulicFile.getAbsolutePath(), mainPathString);
-                createDesktopShortcut(launcherFileName, launcherFile.getAbsolutePath(), mainPathString);
-
-                addToStartup(hydraulicFileName, hydraulicFile.getAbsolutePath(), mainPathString);
-                addToStartup(launcherFileName, launcherFile.getAbsolutePath(), mainPathString);
-            }
-
-            System.out.println("Kurulum tamamlandı!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Kurulum sırasında bir hata oluştu: " + e.getMessage());
-        }
+        Thread installationThread = new Thread(installationTask);
+        installationThread.setDaemon(true);
+        installationThread.start();
     }
 
     private static String getLatestVersionFromGitHub(String releaseUrl) {
@@ -269,14 +301,27 @@ public class MainController implements Initializable {
         return client.send(request, HttpResponse.BodyHandlers.discarding());
     }
 
-    private static void downloadFile(String fileUrl, File destination) throws IOException {
+    private void downloadFile(String fileUrl, File destination, ProgressBar progressBar) throws IOException {
         System.out.println("Dosya indiriliyor: " + fileUrl);
-        try (InputStream in = new URL(fileUrl).openStream();
+        URL url = new URL(fileUrl);
+
+        try (InputStream in = url.openStream();
              FileOutputStream out = new FileOutputStream(destination)) {
+            int fileSize = url.openConnection().getContentLength();
             byte[] buffer = new byte[1024];
             int bytesRead;
+            int downloaded = 0;
+
+            // İlerleme çubuğunu sıfırla
+            Platform.runLater(() -> progressBar.setProgress(0));
+
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
+                downloaded += bytesRead;
+                double progress = (double) downloaded / fileSize;
+
+                // İlerleme çubuğunu güncelle
+                Platform.runLater(() -> progressBar.setProgress(progress));
             }
         }
         System.out.println("İndirme tamamlandı: " + destination.getAbsolutePath());
