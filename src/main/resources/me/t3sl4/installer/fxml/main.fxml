@@ -125,28 +125,40 @@
                      </children>
                   </HBox>
                   <ProgressBar fx:id="updaterServiceProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../assets/images/logo-launcher.png" />
-                           </image>
-                        </ImageView>
-                        <Label text="Önder Launcher" textFill="WHITE" />
+                        <VBox alignment="CENTER" prefHeight="97.0" prefWidth="300.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fx:id="launcherLogo" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../assets/images/logo-launcher.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Önder Launcher" textFill="WHITE" />
+                                 </children>
+                              </HBox>
+                              <ProgressBar fx:id="launcherProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="97.0" prefWidth="300.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fx:id="hydraulicLogo" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../assets/images/logo-hydraulic.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label prefHeight="0.0" prefWidth="143.0" text="Önder Grup Hydraulic Tool" textFill="WHITE" />
+                                 </children>
+                              </HBox>
+                              <ProgressBar fx:id="hydraulicProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
-                  <ProgressBar fx:id="launcherProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
-                     <children>
-                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../assets/images/logo-hydraulic.png" />
-                           </image>
-                        </ImageView>
-                        <Label prefHeight="0.0" prefWidth="143.0" text="Önder Grup Hydraulic Tool" textFill="WHITE" />
-                     </children>
-                  </HBox>
-                  <ProgressBar fx:id="hydraulicProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

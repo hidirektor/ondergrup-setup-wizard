@@ -69,6 +69,9 @@ public class MainController implements Initializable {
     @FXML
     private Label downloadStartedLabel;
 
+    @FXML
+    private ImageView launcherLogo, hydraulicLogo;
+
     //Ekran büyütüp küçültme
     private boolean stageMaximized = false;
 
@@ -78,9 +81,13 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Image launcherImage = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo-launcher.png")), 16, 16, true, true);
+        Image hydraulicImage = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo-hydraulic.png")), 16, 16, true, true);
         Platform.runLater(() -> {
             currentStage = (Stage) userFolderPath.getScene().getWindow();
             userFolderPath.setText(SystemVariables.mainPath);
+            launcherLogo.setImage(launcherImage);
+            hydraulicLogo.setImage(hydraulicImage);
         });
 
         launcherProgressBar = launcherProgress;
