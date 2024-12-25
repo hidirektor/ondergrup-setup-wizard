@@ -17,22 +17,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import me.t3sl4.installer.Launcher;
-import me.t3sl4.installer.utils.FileUtil;
 import me.t3sl4.installer.utils.GeneralUtil;
 import me.t3sl4.installer.utils.SystemVariables;
 import mslinks.ShellLink;
 
 import javax.swing.filechooser.FileSystemView;
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -63,7 +61,7 @@ public class MainController implements Initializable {
     private Pane downloadProgressPane;
 
     @FXML
-    private ProgressBar launcherProgress, hydraulicProgress;
+    private ProgressBar launcherProgress, hydraulicProgress, updaterServiceProgress;
 
     private static ProgressBar launcherProgressBar;
     private static ProgressBar hydraulicProgressBar;
@@ -198,47 +196,53 @@ public class MainController implements Initializable {
                     }
 
                     String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
-                    String launcherFileName, hydraulicFileName;
+                    String launcherFileName, hydraulicFileName, updaterServiceFileName;
 
                     if (os.contains("win")) {
+                        updaterServiceFileName = "windows_Updater.jar";
                         launcherFileName = "windows_Launcher.exe";
                         hydraulicFileName = "windows_Hydraulic.exe";
                     } else if (os.contains("mac")) {
+                        updaterServiceFileName = "mac_Updater.jar";
                         launcherFileName = "mac_Launcher.jar";
                         hydraulicFileName = "mac_Hydraulic.jar";
                     } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+                        updaterServiceFileName = "unix_Updater.jar";
                         launcherFileName = "unix_Launcher.jar";
                         hydraulicFileName = "unix_Hydraulic.jar";
                     } else {
                         throw new UnsupportedOperationException("Bu işletim sistemi desteklenmiyor: " + os);
                     }
 
+                    String updaterServiceVersion = getLatestVersionFromGitHub(SystemVariables.UPDATER_RELEASE_URL);
                     String launcherVersion = getLatestVersionFromGitHub(SystemVariables.LAUNCHER_RELEASE_URL);
                     String hydraulicVersion = getLatestVersionFromGitHub(SystemVariables.HYDRAULIC_RELEASE_URL);
 
-                    if (hydraulicVersion == null || launcherVersion == null) {
+                    if (hydraulicVersion == null || launcherVersion == null || updaterServiceVersion == null) {
                         throw new IOException("GitHub sürüm bilgisi alınamadı.");
                     }
 
+                    String updaterDownloadUrl = SystemVariables.UPDATER_RELEASE_BASE_URL + "/download/" + updaterServiceVersion + "/" + updaterServiceFileName;
                     String launcherDownloadUrl = SystemVariables.LAUNCHER_RELEASE_BASE_URL + "/download/" + launcherVersion + "/" + launcherFileName;
                     String hydraulicDownloadUrl = SystemVariables.HYDRAULIC_RELEASE_BASE_URL + "/download/" + hydraulicVersion + "/" + hydraulicFileName;
 
+                    File updaterFile = new File(mainPath, updaterServiceFileName);
                     File launcherFile = new File(mainPath, launcherFileName);
                     File hydraulicFile = new File(mainPath, hydraulicFileName);
 
+                    deleteIfExists(updaterFile);
                     deleteIfExists(launcherFile);
                     deleteIfExists(hydraulicFile);
 
+                    downloadFile(updaterDownloadUrl, updaterFile, updaterServiceProgress);
                     downloadFile(launcherDownloadUrl, launcherFile, launcherProgressBar);
                     downloadFile(hydraulicDownloadUrl, hydraulicFile, hydraulicProgressBar);
 
                     if (os.contains("win")) {
                         String mainPathString = mainPath.getAbsolutePath();
-                        createDesktopShortcut(launcherFileName, launcherFile.getAbsolutePath(), mainPathString);
-                        createDesktopShortcut(hydraulicFileName, hydraulicFile.getAbsolutePath(), mainPathString);
+                        createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
 
-                        addToStartup(launcherFileName, launcherFile.getAbsolutePath(), mainPathString);
-                        addToStartup(hydraulicFileName, hydraulicFile.getAbsolutePath(), mainPathString);
+                        addToStartup(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
                     }
 
                     System.out.println("Kurulum tamamlandı!");
@@ -333,7 +337,7 @@ public class MainController implements Initializable {
         }
     }
 
-    public static void createDesktopShortcut(String fileName, String targetPath, String workingDirectory) throws IOException {
+    public static void createDesktopShortcut(String fileName, String targetPath, String iconPath, String workingDirectory) throws IOException {
         // Masaüstü dizinini al
         File home = FileSystemView.getFileSystemView().getHomeDirectory();
         String desktopPath = home.getAbsolutePath();
@@ -350,7 +354,7 @@ public class MainController implements Initializable {
         ShellLink sl = new ShellLink()
                 .setTarget(targetPath)
                 .setWorkingDir(workingDirectory)
-                .setIconLocation(targetPath); // İkon olarak aynı dosya ayarlanıyor
+                .setIconLocation(iconPath); // İkon olarak aynı dosya ayarlanıyor
         sl.getHeader().setIconIndex(0); // İkonun dizin numarası
 
         // Kısayolu kaydet
@@ -358,7 +362,7 @@ public class MainController implements Initializable {
         System.out.println("Kısayol oluşturuldu: " + shortcutPath);
     }
 
-    public static void addToStartup(String fileName, String targetPath, String workingDirectory) throws IOException {
+    public static void addToStartup(String fileName, String targetPath, String iconPath, String workingDirectory) throws IOException {
         // Windows başlangıç klasörünü al
         String startupPath = System.getProperty("user.home") + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
         File startupDir = new File(startupPath);
@@ -374,7 +378,7 @@ public class MainController implements Initializable {
         ShellLink sl = new ShellLink()
                 .setTarget(targetPath)
                 .setWorkingDir(workingDirectory)
-                .setIconLocation(targetPath); // İkon olarak aynı dosya ayarlanıyor
+                .setIconLocation(iconPath); // İkon olarak aynı dosya ayarlanıyor
         sl.getHeader().setIconIndex(0); // İkonun dizin numarası
 
         // Kısayolu kaydet
