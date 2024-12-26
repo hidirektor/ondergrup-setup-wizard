@@ -206,7 +206,7 @@ public class MainController implements Initializable {
                     String launcherFileName, hydraulicFileName, updaterServiceFileName;
 
                     if (os.contains("win")) {
-                        updaterServiceFileName = "windows_Updater.jar";
+                        updaterServiceFileName = "windows_Updater.exe";
                         launcherFileName = "windows_Launcher.exe";
                         hydraulicFileName = "windows_Hydraulic.exe";
                     } else if (os.contains("mac")) {

@@ -1,7 +1,7 @@
 package me.t3sl4.installer.utils;
 
 public class SystemVariables {
-    public static final String CURRENT_VERSION = "v1.0.4";
+    public static final String CURRENT_VERSION = "v1.0.5";
 
     public static final String UPDATER_RELEASE_URL = "https://github.com/hidirektor/ondergrup-updater-service/releases/latest";
     public static final String HYDRAULIC_RELEASE_URL = "https://github.com/hidirektor/ondergrup-hydraulic-tool/releases/latest";
