@@ -7,7 +7,7 @@ on:
 
 jobs:
   macos-build:
-    runs-on: macos-14-arm64
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
