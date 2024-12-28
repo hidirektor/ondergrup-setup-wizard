@@ -113,7 +113,7 @@ jobs:
       - name: Determine next version
         id: version
         run: |
-          CURRENT_VERSION=$(grep 'CURRENT_VERSION' src/main/java/me/t3sl4/installer/utils/system/Definitions.java | sed -E 's/.*"([0-9]+\.[0-9]+\.[0-9]+)".*/\1/')
+          CURRENT_VERSION=$(grep 'CURRENT_VERSION' src/main/java/me/t3sl4/installer/utils/system/Definitions.java | sed -E 's/.*"v([0-9]+\\.[0-9]+\\.[0-9]+)".*/\\1/')
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
           NEXT_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
           echo "version=$NEXT_VERSION" >> $GITHUB_ENV
