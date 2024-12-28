@@ -73,7 +73,7 @@ jobs:
         run: mvn clean package
 
       - name: Rename JAR file (Windows)
-        run: mv target/*.jar windows_Setup.jar
+        run: mv target/*.jar ondergrup-setup-wizard.jar
 
       - name: Install Launch4j (Windows)
         run: |
