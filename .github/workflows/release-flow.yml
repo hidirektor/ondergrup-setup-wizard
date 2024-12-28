@@ -33,7 +33,7 @@ jobs:
           name: macos_Setup
           path: macos_Setup.jar
 
-  ubuntu-build:
+  unix-build:
     needs: macos-build
     runs-on: ubuntu-20.04
 
