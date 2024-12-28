@@ -16,10 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Build project (Ubuntu/MacOS)
@@ -37,8 +37,8 @@ jobs:
       - name: Install Launch4j (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          curl -L -o launch4j-setup.exe https://github.com/hidirektor/ondergrup-setup-wizard/blob/master/launch4j/launch4j-3.50-win32.exe
-          start /wait launch4j-setup.exe /S
+          Invoke-WebRequest -Uri "https://github.com/hidirektor/ondergrup-setup-wizard/raw/master/launch4j/launch4j-3.50-win32.exe" -OutFile "launch4j-setup.exe"
+          Start-Process -FilePath "launch4j-setup.exe" -ArgumentList "/S" -NoNewWindow -Wait
 
       - name: Generate EXE using Launch4j (Windows)
         if: matrix.os == 'windows-latest'
