@@ -17,20 +17,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import me.t3sl4.installer.Launcher;
-import me.t3sl4.installer.utils.GeneralUtil;
-import me.t3sl4.installer.utils.SystemVariables;
-import mslinks.ShellLink;
+import me.t3sl4.installer.utils.Utils;
+import me.t3sl4.installer.utils.system.Definitions;
+import me.t3sl4.installer.utils.version.VersionUtil;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -85,7 +78,7 @@ public class MainController implements Initializable {
         Image hydraulicImage = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo-hydraulic.png")), 16, 16, true, true);
         Platform.runLater(() -> {
             currentStage = (Stage) userFolderPath.getScene().getWindow();
-            userFolderPath.setText(SystemVariables.mainPath);
+            userFolderPath.setText(Definitions.mainPath);
             launcherLogo.setImage(launcherImage);
             hydraulicLogo.setImage(hydraulicImage);
         });
@@ -100,7 +93,7 @@ public class MainController implements Initializable {
 
     @FXML
     public void closeProgram() {
-        GeneralUtil.systemShutdown();
+        Utils.systemShutdown();
     }
 
     @FXML
@@ -197,9 +190,9 @@ public class MainController implements Initializable {
             @Override
             protected Void call() {
                 try {
-                    File mainPath = new File(SystemVariables.mainPath);
+                    File mainPath = new File(Definitions.mainPath);
                     if (!mainPath.exists() && !mainPath.mkdirs()) {
-                        throw new IOException("Ana dizin oluşturulamadı: " + SystemVariables.mainPath);
+                        throw new IOException("Ana dizin oluşturulamadı: " + Definitions.mainPath);
                     }
 
                     String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
@@ -221,35 +214,35 @@ public class MainController implements Initializable {
                         throw new UnsupportedOperationException("Bu işletim sistemi desteklenmiyor: " + os);
                     }
 
-                    String updaterServiceVersion = getLatestVersionFromGitHub(SystemVariables.UPDATER_RELEASE_URL);
-                    String launcherVersion = getLatestVersionFromGitHub(SystemVariables.LAUNCHER_RELEASE_URL);
-                    String hydraulicVersion = getLatestVersionFromGitHub(SystemVariables.HYDRAULIC_RELEASE_URL);
+                    String updaterServiceVersion = VersionUtil.getLatestVersionFromGitHub(Definitions.UPDATER_RELEASE_URL);
+                    String launcherVersion = VersionUtil.getLatestVersionFromGitHub(Definitions.LAUNCHER_RELEASE_URL);
+                    String hydraulicVersion = VersionUtil.getLatestVersionFromGitHub(Definitions.HYDRAULIC_RELEASE_URL);
 
                     if (hydraulicVersion == null || launcherVersion == null || updaterServiceVersion == null) {
                         throw new IOException("GitHub sürüm bilgisi alınamadı.");
                     }
 
-                    String updaterDownloadUrl = SystemVariables.UPDATER_RELEASE_BASE_URL + "/download/" + updaterServiceVersion + "/" + updaterServiceFileName;
-                    String launcherDownloadUrl = SystemVariables.LAUNCHER_RELEASE_BASE_URL + "/download/" + launcherVersion + "/" + launcherFileName;
-                    String hydraulicDownloadUrl = SystemVariables.HYDRAULIC_RELEASE_BASE_URL + "/download/" + hydraulicVersion + "/" + hydraulicFileName;
+                    String updaterDownloadUrl = Definitions.UPDATER_RELEASE_BASE_URL + "/download/" + updaterServiceVersion + "/" + updaterServiceFileName;
+                    String launcherDownloadUrl = Definitions.LAUNCHER_RELEASE_BASE_URL + "/download/" + launcherVersion + "/" + launcherFileName;
+                    String hydraulicDownloadUrl = Definitions.HYDRAULIC_RELEASE_BASE_URL + "/download/" + hydraulicVersion + "/" + hydraulicFileName;
 
                     File updaterFile = new File(mainPath, updaterServiceFileName);
                     File launcherFile = new File(mainPath, launcherFileName);
                     File hydraulicFile = new File(mainPath, hydraulicFileName);
 
-                    deleteIfExists(updaterFile);
-                    deleteIfExists(launcherFile);
-                    deleteIfExists(hydraulicFile);
+                    VersionUtil.deleteIfExists(updaterFile);
+                    VersionUtil.deleteIfExists(launcherFile);
+                    VersionUtil.deleteIfExists(hydraulicFile);
 
-                    downloadFile(updaterDownloadUrl, updaterFile, updaterServiceProgress);
-                    downloadFile(launcherDownloadUrl, launcherFile, launcherProgressBar);
-                    downloadFile(hydraulicDownloadUrl, hydraulicFile, hydraulicProgressBar);
+                    VersionUtil.downloadFile(updaterDownloadUrl, updaterFile, updaterServiceProgress);
+                    VersionUtil.downloadFile(launcherDownloadUrl, launcherFile, launcherProgressBar);
+                    VersionUtil.downloadFile(hydraulicDownloadUrl, hydraulicFile, hydraulicProgressBar);
 
                     if (os.contains("win")) {
                         String mainPathString = mainPath.getAbsolutePath();
-                        createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
+                        VersionUtil.createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
 
-                        addToStartup(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
+                        VersionUtil.addToStartup(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
                     }
 
                     System.out.println("Kurulum tamamlandı!");
@@ -268,128 +261,5 @@ public class MainController implements Initializable {
         Thread installationThread = new Thread(installationTask);
         installationThread.setDaemon(true);
         installationThread.start();
-    }
-
-    private static String getLatestVersionFromGitHub(String releaseUrl) {
-        try {
-            HttpResponse<Void> response = httpHead(releaseUrl);
-
-            if (response.statusCode() == 302) { // 302 Redirect
-                String redirectedUrl = response.headers().firstValue("location").orElse(null);
-                if (redirectedUrl != null) {
-                    return extractTagFromURL(redirectedUrl);
-                } else {
-                    System.err.println("Yönlendirme URL'si alınamadı.");
-                    return null;
-                }
-            } else if (response.statusCode() == 200) {
-                return extractTagFromURL(releaseUrl);
-            } else {
-                System.err.println("GitHub sürüm bilgisi alınamadı: HTTP " + response.statusCode());
-                return null;
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private static String extractTagFromURL(String url) {
-        String tagPrefix = "/releases/tag/";
-        int tagIndex = url.indexOf(tagPrefix);
-        if (tagIndex == -1) {
-            return null;
-        }
-        return url.substring(tagIndex + tagPrefix.length());
-    }
-
-    private static HttpResponse<Void> httpHead(String url) throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .method("HEAD", HttpRequest.BodyPublishers.noBody())
-                .build();
-        return client.send(request, HttpResponse.BodyHandlers.discarding());
-    }
-
-    private void downloadFile(String fileUrl, File destination, ProgressBar progressBar) throws IOException {
-        System.out.println("Dosya indiriliyor: " + fileUrl);
-        URL url = new URL(fileUrl);
-
-        try (InputStream in = url.openStream();
-             FileOutputStream out = new FileOutputStream(destination)) {
-            int fileSize = url.openConnection().getContentLength();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            int downloaded = 0;
-
-            // İlerleme çubuğunu sıfırla
-            Platform.runLater(() -> progressBar.setProgress(0));
-
-            while ((bytesRead = in.read(buffer)) != -1) {
-                out.write(buffer, 0, bytesRead);
-                downloaded += bytesRead;
-                double progress = (double) downloaded / fileSize;
-
-                // İlerleme çubuğunu güncelle
-                Platform.runLater(() -> progressBar.setProgress(progress));
-            }
-        }
-        System.out.println("İndirme tamamlandı: " + destination.getAbsolutePath());
-    }
-
-    private static void deleteIfExists(File file) {
-        if (file.exists() && file.delete()) {
-            System.out.println("Mevcut dosya silindi: " + file.getAbsolutePath());
-        }
-    }
-
-    public static void createDesktopShortcut(String fileName, String targetPath, String iconPath, String workingDirectory) throws IOException {
-        // Masaüstü dizinini al
-        File home = FileSystemView.getFileSystemView().getHomeDirectory();
-        String desktopPath = home.getAbsolutePath();
-        File desktopDir = new File(desktopPath);
-
-        // Masaüstü dizinini kontrol et ve gerekirse oluştur
-        if (!desktopDir.exists() && !desktopDir.mkdirs()) {
-            throw new IOException("Masaüstü dizini oluşturulamadı: " + desktopPath);
-        }
-
-        String shortcutPath = desktopPath + "\\" + fileName + ".lnk";
-
-        // Kısayolu oluştur
-        ShellLink sl = new ShellLink()
-                .setTarget(targetPath)
-                .setWorkingDir(workingDirectory)
-                .setIconLocation(iconPath); // İkon olarak aynı dosya ayarlanıyor
-        sl.getHeader().setIconIndex(0); // İkonun dizin numarası
-
-        // Kısayolu kaydet
-        sl.saveTo(shortcutPath);
-        System.out.println("Kısayol oluşturuldu: " + shortcutPath);
-    }
-
-    public static void addToStartup(String fileName, String targetPath, String iconPath, String workingDirectory) throws IOException {
-        // Windows başlangıç klasörünü al
-        String startupPath = System.getProperty("user.home") + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
-        File startupDir = new File(startupPath);
-
-        // Başlangıç dizinini kontrol et ve gerekirse oluştur
-        if (!startupDir.exists() && !startupDir.mkdirs()) {
-            throw new IOException("Başlangıç dizini oluşturulamadı: " + startupPath);
-        }
-
-        String shortcutPath = startupPath + "\\" + fileName + ".lnk";
-
-        // Kısayolu oluştur
-        ShellLink sl = new ShellLink()
-                .setTarget(targetPath)
-                .setWorkingDir(workingDirectory)
-                .setIconLocation(iconPath); // İkon olarak aynı dosya ayarlanıyor
-        sl.getHeader().setIconIndex(0); // İkonun dizin numarası
-
-        // Kısayolu kaydet
-        sl.saveTo(shortcutPath);
-        System.out.println("Başlangıç klasörüne eklendi: " + shortcutPath);
     }
 }

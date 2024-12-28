@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import me.t3sl4.installer.utils.FileUtil;
-import me.t3sl4.installer.utils.SceneUtil;
+import me.t3sl4.installer.utils.file.FileUtil;
+import me.t3sl4.installer.utils.ui.SceneUtil;
 
 import java.io.IOException;
 import java.util.List;
