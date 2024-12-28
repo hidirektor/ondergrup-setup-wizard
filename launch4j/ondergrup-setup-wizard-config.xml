@@ -2,8 +2,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>C:\Users\hidir\OneDrive\Masaüstü\ondergrup-setup-wizard.jar</jar>
-  <outfile>C:\Users\hidir\OneDrive\Masaüstü\Önder Setup Wizard.exe</outfile>
+  <jar>ondergrup-setup-wizard.jar</jar>
+  <outfile>windows_Setup.exe</outfile>
   <errTitle>Programın çalışabilmesi için JRE 1.8.0 ve JDK 12.0.2 Gereklidir !</errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -12,8 +12,8 @@
   <supportUrl>https://github.com/hidirektor</supportUrl>
   <stayAlive>false</stayAlive>
   <restartOnCrash>true</restartOnCrash>
-  <manifest>C:\Users\hidir\IdeaProjects\ondergrup-setup-wizard\app.manifest</manifest>
-  <icon>C:\Users\hidir\IdeaProjects\ondergrup-setup-wizard\src\main\resources\assets\images\logo.ico</icon>
+  <manifest>app.manifest</manifest>
+  <icon>src/main/resources/assets/images/logo.ico</icon>
   <jre>
     <path>%JAVA_HOME%;%PATH%</path>
     <requiresJdk>true</requiresJdk>
