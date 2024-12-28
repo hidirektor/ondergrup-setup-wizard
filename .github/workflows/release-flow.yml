@@ -87,7 +87,7 @@ jobs:
           & "C:\Program Files (x86)\Launch4j\launch4jc.exe" "ondergrup-setup-wizard-config.xml"
 
       - name: Rename EXE file (Windows)
-        run: mv ondergrup-setup-wizard.exe windows_Setup.exe
+        run: mv target/*.exe windows_Setup.exe
 
       - name: Upload artifact (Windows)
         uses: actions/upload-artifact@v3
