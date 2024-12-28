@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-20.04, macos-14-arm64, windows-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -26,6 +26,14 @@ jobs:
         if: matrix.os != 'windows-latest'
         run: mvn clean package
 
+      - name: Rename JAR file (Ubuntu)
+        if: matrix.os == 'ubuntu-20.04'
+        run: mv target/*.jar unix_Setup.jar
+
+      - name: Rename JAR file (MacOS)
+        if: matrix.os == 'macos-14-arm64'
+        run: mv target/*.jar macos_Setup.jar
+
       - name: Install Launch4j (Windows)
         if: matrix.os == 'windows-latest'
         run: |
@@ -36,6 +44,10 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           launch4j \path\to\ondergrup-setup-wizard-config.xml
+
+      - name: Rename EXE file (Windows)
+        if: matrix.os == 'windows-latest'
+        run: mv target/*.exe windows_Setup.exe
 
       - name: Determine next version
         id: version
@@ -48,9 +60,11 @@ jobs:
         run: |
           mkdir -p artifacts
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            mv target/*.exe artifacts/
+            mv windows_Setup.exe artifacts/
+          elif [ "${{ matrix.os }}" == "ubuntu-20.04" ]; then
+            mv unix_Setup.jar artifacts/
           else
-            mv target/*.jar artifacts/
+            mv macos_Setup.jar artifacts/
           fi
 
       - name: Create Release
