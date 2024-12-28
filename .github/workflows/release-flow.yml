@@ -78,9 +78,6 @@ jobs:
       - name: Build project (Windows)
         run: mvn clean package
 
-      - name: Rename JAR file (Windows)
-        run: mv target/*.jar ondergrup-setup-wizard.jar
-
       - name: Install Launch4j (Windows)
         run: |
           Invoke-WebRequest -Uri "https://github.com/hidirektor/ondergrup-setup-wizard/raw/master/launch4j/launch4j-3.50-win32.exe" -OutFile "launch4j-setup.exe"
