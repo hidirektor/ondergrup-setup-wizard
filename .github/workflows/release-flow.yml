@@ -119,7 +119,7 @@ jobs:
       - name: Determine next version
         id: version
         run: |
-          CURRENT_VERSION=$(grep 'CURRENT_VERSION' src/main/java/me/t3sl4/installer/utils/system/Definitions.java | sed -E 's/.*"v([0-9]+\\.[0-9]+\\.[0-9]+)".*/\\1/')
+          CURRENT_VERSION=$(curl -s https://raw.githubusercontent.com/hidirektor/ondergrup-setup-wizard/master/src/main/java/me/t3sl4/installer/utils/system/Definitions.java | grep 'CURRENT_VERSION' | sed -E 's/.*"v([0-9]+\.[0-9]+\.[0-9]+)".*/\1/')
           IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
           NEXT_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
           echo "version=$NEXT_VERSION" >> $GITHUB_ENV
@@ -139,7 +139,25 @@ jobs:
         with:
           tag_name: v${{ env.version }}
           name: Release v${{ env.version }}
-          body: ${{ github.event.head_commit.message }}
+          body: |
+            Sevgili kullanıcılarımız,
+            
+              Bu güncelleme ile uygulamamızı daha güçlü, daha hızlı ve daha kullanıcı dostu hale getirdik. İşte sizler için sunduğumuz yenilikler:
+            
+              ✨ Yeni Özellikler:
+              - Performans Artışı: Daha hızlı yüklenme süreleri ve optimize edilmiş işlem kapasitesi.
+              - Yeni Arayüz Tasarımı: Modern ve minimalist tasarım ile daha sezgisel bir kullanıcı deneyimi.
+              - Gelişmiş Bildirim Sistemi: Önemli güncellemelerden anında haberdar olun.
+            
+              🔧 Hata Düzeltmeleri ve İyileştirmeler:
+              - Küçük hatalar giderildi ve genel sistem kararlılığı artırıldı.
+              - Geri bildirimlerinizi dikkate alarak kullanıcı deneyimini geliştirdik.
+            
+              💡 Yeni Eklenen Özellikler:
+              - Karanlık Mod: Göz dostu bir deneyim için karanlık tema seçeneği eklendi.
+              - Çoklu Dil Desteği: Artık birden fazla dilde hizmet sunuyoruz!
+            
+              Bize destek olduğunuz için teşekkür ederiz. Sizlerin geri bildirimleriyle her geçen gün daha iyiye gidiyoruz. Yeni sürümümüzü hemen keşfedin!
           files: artifacts/*
         env:
           GITHUB_TOKEN: ${{ secrets.SETUP_TOKEN }}
