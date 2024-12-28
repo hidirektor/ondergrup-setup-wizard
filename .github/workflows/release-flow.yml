@@ -79,9 +79,7 @@ jobs:
         run: mvn clean package
 
       - name: Rename JAR file (Windows)
-        run: |
-          JAR_FILE=$(Get-ChildItem -Path target -Filter *.jar | Select-Object -First 1).FullName
-          Rename-Item -Path $JAR_FILE -NewName ondergrup-setup-wizard.jar
+        run: mv target/*.jar ondergrup-setup-wizard.jar
 
       - name: Install Launch4j (Windows)
         run: |
