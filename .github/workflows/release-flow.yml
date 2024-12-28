@@ -62,7 +62,7 @@ jobs:
           path: unix_Setup.jar
 
   windows-build:
-    needs: ubuntu-build
+    needs: unix-build
     runs-on: windows-latest
 
     steps:
@@ -109,7 +109,7 @@ jobs:
           path: windows_Setup.exe
 
   release:
-    needs: [macos-build, ubuntu-build, windows-build]
+    needs: [macos-build, unix-build, windows-build]
     runs-on: ubuntu-20.04
 
     steps:
