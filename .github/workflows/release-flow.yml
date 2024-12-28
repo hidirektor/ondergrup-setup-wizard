@@ -40,10 +40,15 @@ jobs:
           Invoke-WebRequest -Uri "https://github.com/hidirektor/ondergrup-setup-wizard/raw/master/launch4j/launch4j-3.50-win32.exe" -OutFile "launch4j-setup.exe"
           Start-Process -FilePath "launch4j-setup.exe" -ArgumentList "/S" -NoNewWindow -Wait
 
+      - name: Download Launch4j Config
+        if: matrix.os == 'windows-latest'
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/hidirektor/ondergrup-setup-wizard/raw/master/launch4j/ondergrup-setup-wizard-config.xml" -OutFile "ondergrup-setup-wizard-config.xml"
+
       - name: Generate EXE using Launch4j (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          launch4j \path\to\ondergrup-setup-wizard-config.xml
+          launch4jc.exe ondergrup-setup-wizard-config.xml
 
       - name: Rename EXE file (Windows)
         if: matrix.os == 'windows-latest'
