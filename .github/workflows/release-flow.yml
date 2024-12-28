@@ -25,10 +25,11 @@ jobs:
       - name: Rename JAR file (MacOS)
         run: mv target/*.jar macos_Setup.jar
 
-      - name: Prepare artifacts
-        run: |
-          mkdir -p artifacts
-          mv macos_Setup.jar artifacts/
+      - name: Upload artifact (MacOS)
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos_Setup
+          path: macos_Setup.jar
 
   ubuntu-build:
     needs: macos-build
@@ -50,10 +51,11 @@ jobs:
       - name: Rename JAR file (Ubuntu)
         run: mv target/*.jar unix_Setup.jar
 
-      - name: Prepare artifacts
-        run: |
-          mkdir -p artifacts
-          mv unix_Setup.jar artifacts/
+      - name: Upload artifact (Ubuntu)
+        uses: actions/upload-artifact@v3
+        with:
+          name: unix_Setup
+          path: unix_Setup.jar
 
   windows-build:
     needs: ubuntu-build
@@ -73,7 +75,7 @@ jobs:
         run: mvn clean package
 
       - name: Rename JAR file (Windows)
-        run: mv target/*.jar ondergrup-setup-wizard.jar
+        run: mv target/*.jar windows_Setup.jar
 
       - name: Install Launch4j (Windows)
         run: |
@@ -94,10 +96,11 @@ jobs:
       - name: Rename EXE file (Windows)
         run: mv target/*.exe windows_Setup.exe
 
-      - name: Prepare artifacts
-        run: |
-          mkdir -p artifacts
-          mv windows_Setup.exe artifacts/
+      - name: Upload artifact (Windows)
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows_Setup
+          path: windows_Setup.exe
 
   release:
     needs: [macos-build, ubuntu-build, windows-build]
@@ -114,12 +117,15 @@ jobs:
           NEXT_VERSION=$((CURRENT_VERSION + 1))
           echo "version=$NEXT_VERSION" >> $GITHUB_ENV
 
-      - name: Gather all artifacts
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Prepare artifacts for release
         run: |
           mkdir -p artifacts
-          cp macos-build/artifacts/macos_Setup.jar artifacts/
-          cp ubuntu-build/artifacts/unix_Setup.jar artifacts/
-          cp windows-build/artifacts/windows_Setup.exe artifacts/
+          mv macos_Setup/macos_Setup.jar artifacts/
+          mv unix_Setup/unix_Setup.jar artifacts/
+          mv windows_Setup/windows_Setup.exe artifacts/
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
