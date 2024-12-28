@@ -52,7 +52,7 @@ jobs:
       - name: Generate EXE using Launch4j (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          "C:\Program Files (x86)\Launch4j\launch4j.exe" ondergrup-setup-wizard-config.xml
+          "C:\Program Files (x86)\Launch4j\launch4jc.exe" ondergrup-setup-wizard-config.xml
 
       - name: Rename EXE file (Windows)
         if: matrix.os == 'windows-latest'
