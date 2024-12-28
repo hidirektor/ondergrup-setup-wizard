@@ -23,7 +23,9 @@ jobs:
         run: mvn clean package
 
       - name: Rename JAR file (MacOS)
-        run: mv target/*.jar macos_Setup.jar
+        run: |
+          JAR_FILE=$(find target -name "*.jar" | head -n 1)
+          mv "$JAR_FILE" macos_Setup.jar
 
       - name: Upload artifact (MacOS)
         uses: actions/upload-artifact@v3
@@ -49,7 +51,9 @@ jobs:
         run: mvn clean package
 
       - name: Rename JAR file (Ubuntu)
-        run: mv target/*.jar unix_Setup.jar
+        run: |
+          JAR_FILE=$(find target -name "*.jar" | head -n 1)
+          mv "$JAR_FILE" unix_Setup.jar
 
       - name: Upload artifact (Ubuntu)
         uses: actions/upload-artifact@v3
@@ -75,7 +79,9 @@ jobs:
         run: mvn clean package
 
       - name: Rename JAR file (Windows)
-        run: mv target/*.jar ondergrup-setup-wizard.jar
+        run: |
+          JAR_FILE=$(Get-ChildItem -Path target -Filter *.jar | Select-Object -First 1).FullName
+          Rename-Item -Path $JAR_FILE -NewName ondergrup-setup-wizard.jar
 
       - name: Install Launch4j (Windows)
         run: |
