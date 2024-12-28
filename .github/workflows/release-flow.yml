@@ -138,7 +138,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ env.version }}
-          name: Release v${{ env.version }}
+          name: v${{ env.version }} - Yeniliklerle Dolu Bir Deneyim! 🚀
           body: |
             Sevgili kullanıcılarımız,
             
