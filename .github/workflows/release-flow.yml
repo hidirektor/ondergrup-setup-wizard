@@ -6,9 +6,59 @@ on:
       - master
 
 jobs:
-  macos-build:
-    runs-on: macos-latest
+  check-version:
+    runs-on: ubuntu-20.04
+    outputs:
+      version_changed: ${{ steps.check.outputs.changed }}
+      version: ${{ steps.get_version.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
+      - name: Get current version from repository
+        id: get_version
+        run: |
+          # Extract the CURRENT_VERSION from the file
+          CURRENT_VERSION=$(grep 'CURRENT_VERSION' src/main/java/me/t3sl4/installer/utils/system/Definitions.java | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+')
+          # Validate the extracted version
+          if [[ -z "$CURRENT_VERSION" ]]; then
+            echo "Error: CURRENT_VERSION not found!"
+            exit 1
+          fi
+          echo "Extracted CURRENT_VERSION: $CURRENT_VERSION"
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get latest release version
+        id: get_latest
+        run: |
+          # Fetch the latest release version from GitHub API
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/hidirektor/ondergrup-setup-wizard/releases/latest | jq -r '.tag_name' | sed 's/v//')
+          # Validate the fetched version
+          if [[ -z "$LATEST_VERSION" || "$LATEST_VERSION" == "null" ]]; then
+            echo "Error: LATEST_VERSION not found!"
+            exit 1
+          fi
+          echo "Latest release version: $LATEST_VERSION"
+          echo "latest=$LATEST_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Compare versions
+        id: check
+        run: |
+          CURRENT_VERSION="${{ steps.get_version.outputs.version }}"
+          LATEST_VERSION="${{ steps.get_latest.outputs.latest }}"
+          # Compare versions and set output
+          if [ "$LATEST_VERSION" != "$CURRENT_VERSION" ]; then
+            echo "Version changed! Triggering build..."
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Version unchanged. Skipping build."
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+  macos-build:
+    needs: check-version
+    if: needs.check-version.outputs.version_changed == 'true'
+    runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
