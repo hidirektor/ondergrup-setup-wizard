@@ -20,6 +20,7 @@ import me.t3sl4.installer.Launcher;
 import me.t3sl4.installer.utils.Utils;
 import me.t3sl4.installer.utils.file.FileUtil;
 import me.t3sl4.installer.utils.system.Definitions;
+import me.t3sl4.util.os.OSUtil;
 import me.t3sl4.util.version.DownloadProgressListener;
 import me.t3sl4.util.version.VersionUtil;
 
@@ -224,9 +225,9 @@ public class MainController implements Initializable {
                     FileUtil.deleteIfExists(launcherFile);
                     FileUtil.deleteIfExists(hydraulicFile);
 
-                    startDownloadTask(updaterServiceFileName, updaterServiceProgress, Definitions.UPDATER_REPO_NAME);
-                    startDownloadTask(launcherFileName, launcherProgress, Definitions.LAUNCHER_REPO_NAME);
-                    startDownloadTask(hydraulicFileName, hydraulicProgress, Definitions.HYDRAULIC_REPO_NAME);
+                    startDownloadTask(updaterServiceFileName, updaterServiceProgress, Definitions.UPDATER_REPO_NAME, Definitions.PREF_UPDATER_KEY);
+                    startDownloadTask(launcherFileName, launcherProgress, Definitions.LAUNCHER_REPO_NAME, Definitions.PREF_LAUNCHER_KEY);
+                    startDownloadTask(hydraulicFileName, hydraulicProgress, Definitions.HYDRAULIC_REPO_NAME, Definitions.PREF_HYDRAULIC_KEY);
 
                     if (os.contains("win")) {
                         String mainPathString = mainPath.getAbsolutePath();
@@ -253,7 +254,7 @@ public class MainController implements Initializable {
         installationThread.start();
     }
 
-    private void startDownloadTask(String fileName, ProgressBar currentProgressBar, String repoName) {
+    private void startDownloadTask(String fileName, ProgressBar currentProgressBar, String repoName, String prefKey) {
         Task<Void> downloadTask = new Task<>() {
             @Override
             protected Void call() {
@@ -276,8 +277,9 @@ public class MainController implements Initializable {
                             fileName,
                             downloadListener
                     );
-                } catch (Exception e){
-                    System.out.println(e.getMessage());
+                } finally {
+                    String latestVersion = VersionUtil.getLatestVersion(Definitions.REPO_OWNER, repoName);
+                    OSUtil.updateLocalVersion(Definitions.PREF_NODE_NAME, prefKey, latestVersion);
                 }
                 return null;
             }

@@ -5,6 +5,7 @@ module me.t3sl4.installer {
     requires mslinks;
     requires java.desktop;
     requires me.t3sl4.util.version;
+    requires me.t3sl4.util.os;
 
 
     opens me.t3sl4.installer to javafx.fxml;
