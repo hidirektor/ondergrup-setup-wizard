@@ -1,13 +1,14 @@
 package me.t3sl4.installer.utils.file;
 
 import me.t3sl4.installer.utils.system.Definitions;
+import mslinks.ShellLink;
 
-import java.io.*;
-import java.net.URL;
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 public class FileUtil {
     public static void criticalFileSystem() throws IOException {
@@ -38,63 +39,58 @@ public class FileUtil {
         }
     }
 
-    public static void createFile(String path) throws IOException {
-        Path filePath = Paths.get(path);
-        if (Files.notExists(filePath)) {
-            Files.createFile(filePath);
+    public static void deleteIfExists(File file) {
+        if (file.exists() && file.delete()) {
+            System.out.println("Mevcut dosya silindi: " + file.getAbsolutePath());
         }
     }
 
-    public static void fileCopy(String sourcePath, String destPath, boolean isRefresh) throws IOException {
-        File destinationFile = new File(destPath);
+    public static void createDesktopShortcut(String fileName, String targetPath, String iconPath, String workingDirectory) throws IOException {
+        // Masaüstü dizinini al
+        File home = FileSystemView.getFileSystemView().getHomeDirectory();
+        String desktopPath = home.getAbsolutePath();
+        File desktopDir = new File(desktopPath);
 
-        if(isRefresh) {
-            InputStream resourceAsStream = FileUtil.class.getResourceAsStream(sourcePath);
-
-            if (resourceAsStream == null) {
-                throw new FileNotFoundException("Kaynak bulunamadı: " + sourcePath);
-            }
-
-            Path destination = Paths.get(destPath);
-            Files.copy(resourceAsStream, destination, StandardCopyOption.REPLACE_EXISTING);
-            resourceAsStream.close();
-        } else {
-            if (!destinationFile.exists()) {
-                InputStream resourceAsStream = FileUtil.class.getResourceAsStream(sourcePath);
-
-                if (resourceAsStream == null) {
-                    throw new FileNotFoundException("Kaynak bulunamadı: " + sourcePath);
-                }
-
-                Path destination = Paths.get(destPath);
-                Files.copy(resourceAsStream, destination, StandardCopyOption.REPLACE_EXISTING);
-                resourceAsStream.close();
-            } else {
-                System.out.println("File already exists: " + destPath);
-            }
+        // Masaüstü dizinini kontrol et ve gerekirse oluştur
+        if (!desktopDir.exists() && !desktopDir.mkdirs()) {
+            throw new IOException("Masaüstü dizini oluşturulamadı: " + desktopPath);
         }
+
+        String shortcutPath = desktopPath + "\\" + fileName + ".lnk";
+
+        // Kısayolu oluştur
+        ShellLink sl = new ShellLink()
+                .setTarget(targetPath)
+                .setWorkingDir(workingDirectory)
+                .setIconLocation(iconPath); // İkon olarak aynı dosya ayarlanıyor
+        sl.getHeader().setIconIndex(0); // İkonun dizin numarası
+
+        // Kısayolu kaydet
+        sl.saveTo(shortcutPath);
+        System.out.println("Kısayol oluşturuldu: " + shortcutPath);
     }
 
-    /**
-     * Verilen bir URL'den dosyayı indirir ve hedef dosya konumuna kaydeder.
-     *
-     * @param sourceUrl URL'den dosya alınır.
-     * @param destinationFile Dosyanın kaydedileceği hedef konum.
-     * @throws IOException Eğer indirme veya yazma sırasında bir hata oluşursa.
-     */
-    public static void copyURLToFile(URL sourceUrl, File destinationFile) throws IOException {
-        try (InputStream inputStream = new BufferedInputStream(sourceUrl.openStream());
-             FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
+    public static void addToStartup(String fileName, String targetPath, String iconPath, String workingDirectory) throws IOException {
+        // Windows başlangıç klasörünü al
+        String startupPath = System.getProperty("user.home") + "\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup";
+        File startupDir = new File(startupPath);
 
-            byte[] buffer = new byte[1024]; // 1 KB tampon boyutu
-            int bytesRead;
-
-            // Veri akışını okuyup yaz
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-
-            System.out.println("Dosya başarıyla indirildi: " + destinationFile.getAbsolutePath());
+        // Başlangıç dizinini kontrol et ve gerekirse oluştur
+        if (!startupDir.exists() && !startupDir.mkdirs()) {
+            throw new IOException("Başlangıç dizini oluşturulamadı: " + startupPath);
         }
+
+        String shortcutPath = startupPath + "\\" + fileName + ".lnk";
+
+        // Kısayolu oluştur
+        ShellLink sl = new ShellLink()
+                .setTarget(targetPath)
+                .setWorkingDir(workingDirectory)
+                .setIconLocation(iconPath); // İkon olarak aynı dosya ayarlanıyor
+        sl.getHeader().setIconIndex(0); // İkonun dizin numarası
+
+        // Kısayolu kaydet
+        sl.saveTo(shortcutPath);
+        System.out.println("Başlangıç klasörüne eklendi: " + shortcutPath);
     }
 }

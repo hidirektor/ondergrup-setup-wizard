@@ -3,13 +3,10 @@ package me.t3sl4.installer.utils.system;
 public class Definitions {
     public static final String CURRENT_VERSION = "v1.0.9";
 
-    public static final String UPDATER_RELEASE_URL = "https://github.com/hidirektor/ondergrup-updater-service/releases/latest";
-    public static final String HYDRAULIC_RELEASE_URL = "https://github.com/hidirektor/ondergrup-hydraulic-tool/releases/latest";
-    public static final String LAUNCHER_RELEASE_URL = "https://github.com/hidirektor/ondergrup-launcher/releases/latest";
-
-    public static final String UPDATER_RELEASE_BASE_URL = "https://github.com/hidirektor/ondergrup-updater-service/releases";
-    public static final String HYDRAULIC_RELEASE_BASE_URL = "https://github.com/hidirektor/ondergrup-hydraulic-tool/releases";
-    public static final String LAUNCHER_RELEASE_BASE_URL = "https://github.com/hidirektor/ondergrup-launcher/releases";
+    public static final String REPO_OWNER = "hidirektor";
+    public static final String UPDATER_REPO_NAME = "ondergrup-updater-service";
+    public static final String LAUNCHER_REPO_NAME = "ondergrup-launcher";
+    public static final String HYDRAULIC_REPO_NAME = "ondergrup-hydraulic-tool";
 
     public static String mainPath;
 

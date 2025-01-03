@@ -18,8 +18,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import me.t3sl4.installer.Launcher;
 import me.t3sl4.installer.utils.Utils;
+import me.t3sl4.installer.utils.file.FileUtil;
 import me.t3sl4.installer.utils.system.Definitions;
-import me.t3sl4.installer.utils.version.VersionUtil;
+import me.t3sl4.util.version.DownloadProgressListener;
+import me.t3sl4.util.version.VersionUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -214,35 +216,23 @@ public class MainController implements Initializable {
                         throw new UnsupportedOperationException("Bu işletim sistemi desteklenmiyor: " + os);
                     }
 
-                    String updaterServiceVersion = VersionUtil.getLatestVersionFromGitHub(Definitions.UPDATER_RELEASE_URL);
-                    String launcherVersion = VersionUtil.getLatestVersionFromGitHub(Definitions.LAUNCHER_RELEASE_URL);
-                    String hydraulicVersion = VersionUtil.getLatestVersionFromGitHub(Definitions.HYDRAULIC_RELEASE_URL);
-
-                    if (hydraulicVersion == null || launcherVersion == null || updaterServiceVersion == null) {
-                        throw new IOException("GitHub sürüm bilgisi alınamadı.");
-                    }
-
-                    String updaterDownloadUrl = Definitions.UPDATER_RELEASE_BASE_URL + "/download/" + updaterServiceVersion + "/" + updaterServiceFileName;
-                    String launcherDownloadUrl = Definitions.LAUNCHER_RELEASE_BASE_URL + "/download/" + launcherVersion + "/" + launcherFileName;
-                    String hydraulicDownloadUrl = Definitions.HYDRAULIC_RELEASE_BASE_URL + "/download/" + hydraulicVersion + "/" + hydraulicFileName;
-
                     File updaterFile = new File(mainPath, updaterServiceFileName);
                     File launcherFile = new File(mainPath, launcherFileName);
                     File hydraulicFile = new File(mainPath, hydraulicFileName);
 
-                    VersionUtil.deleteIfExists(updaterFile);
-                    VersionUtil.deleteIfExists(launcherFile);
-                    VersionUtil.deleteIfExists(hydraulicFile);
+                    FileUtil.deleteIfExists(updaterFile);
+                    FileUtil.deleteIfExists(launcherFile);
+                    FileUtil.deleteIfExists(hydraulicFile);
 
-                    VersionUtil.downloadFile(updaterDownloadUrl, updaterFile, updaterServiceProgress);
-                    VersionUtil.downloadFile(launcherDownloadUrl, launcherFile, launcherProgressBar);
-                    VersionUtil.downloadFile(hydraulicDownloadUrl, hydraulicFile, hydraulicProgressBar);
+                    startDownloadTask(updaterServiceFileName, updaterServiceProgress, Definitions.UPDATER_REPO_NAME);
+                    startDownloadTask(launcherFileName, launcherProgress, Definitions.LAUNCHER_REPO_NAME);
+                    startDownloadTask(hydraulicFileName, hydraulicProgress, Definitions.HYDRAULIC_REPO_NAME);
 
                     if (os.contains("win")) {
                         String mainPathString = mainPath.getAbsolutePath();
-                        VersionUtil.createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
+                        FileUtil.createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
 
-                        VersionUtil.addToStartup(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
+                        FileUtil.addToStartup(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
                     }
 
                     System.out.println("Kurulum tamamlandı!");
@@ -261,5 +251,47 @@ public class MainController implements Initializable {
         Thread installationThread = new Thread(installationTask);
         installationThread.setDaemon(true);
         installationThread.start();
+    }
+
+    private void startDownloadTask(String fileName, ProgressBar currentProgressBar, String repoName) {
+        Task<Void> downloadTask = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    DownloadProgressListener downloadListener = (bytesRead, totalBytes) -> {
+                        Platform.runLater(() -> currentProgressBar.setProgress(0));
+
+                        if (totalBytes > 0) {
+                            double progress = (double) bytesRead / totalBytes;
+                            Platform.runLater(() -> currentProgressBar.setProgress(progress));
+                        } else {
+                            Platform.runLater(() -> currentProgressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS)); // Indeterminate progress
+                        }
+                    };
+
+                    VersionUtil.downloadLatestWithProgress(
+                            Definitions.REPO_OWNER,
+                            repoName,
+                            Definitions.mainPath,
+                            fileName,
+                            downloadListener
+                    );
+                } catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
+                return null;
+            }
+        };
+
+        try {
+            Thread downloadThread = new Thread(downloadTask);
+            downloadThread.setDaemon(true);
+            downloadThread.start();
+            downloadThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+            // Handle the interruption appropriately
+        }
     }
 }
