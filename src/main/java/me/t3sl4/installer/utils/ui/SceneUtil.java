@@ -28,7 +28,7 @@ public class SceneUtil {
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
-        primaryStage.setTitle("Önder Grup Setup Wizard " + Definitions.getVersion());
+        primaryStage.setTitle("Canicula Setup Wizard " + Definitions.getVersion());
         Image icon = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo.png")));
         primaryStage.getIcons().add(icon);
 
@@ -78,7 +78,7 @@ public class SceneUtil {
         primaryStage.initStyle(StageStyle.TRANSPARENT);
 
         // Başlık ve ikon
-        primaryStage.setTitle("Önder Grup Setup Wizard " + Definitions.getVersion());
+        primaryStage.setTitle("Canicula Setup Wizard " + Definitions.getVersion());
         Image icon = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo.png")));
         primaryStage.getIcons().add(icon);
 

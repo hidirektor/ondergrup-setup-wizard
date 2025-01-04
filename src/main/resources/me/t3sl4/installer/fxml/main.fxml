@@ -52,19 +52,24 @@
                               <Insets right="8.0" />
                            </HBox.margin>
                         </ImageView>
-                        <Label text="ÖnderGrup Setup Wizard" textFill="#9e9e9e" />
+                        <Label text="Canicula Setup Wizard" textFill="#9e9e9e" />
                      </children>
                   </HBox>
                </children>
             </HBox>
             <AnchorPane prefHeight="382.0" prefWidth="600.0" style="-fx-background-color: #F9F871;">
                <children>
-                  <ImageView fx:id="mainLogo" fitHeight="97.0" fitWidth="200.0" layoutX="200.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="mainLogo" fitHeight="97.0" fitWidth="200.0" layoutX="137.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../assets/images/onder_grup_main_2.png" />
+                        <Image url="@../../../../assets/images/logo-sade.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="mainLabel" layoutX="70.0" layoutY="96.0" prefHeight="110.0" prefWidth="460.0" text="Kurulum sihirbazına hoşgeldiniz. Önder Launcher ve Hydraulic Tool kurulumu için lütfen aşağıdaki ikonu sağ taraftaki klasörün içine sürükleyip bırakın." textAlignment="CENTER" textFill="#170b0b" wrapText="true">
+                  <Label layoutX="234.0" layoutY="62.0" text="Canicula No-Code Platform">
+                     <font>
+                        <Font name="CeraPro-Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="mainLabel" layoutX="70.0" layoutY="96.0" prefHeight="110.0" prefWidth="460.0" text="Kurulum sihirbazına hoşgeldiniz. Launcher ve Hydraulic Tool kurulumu için lütfen aşağıdaki ikonu sağ taraftaki klasörün içine sürükleyip bırakın." textAlignment="CENTER" textFill="#170b0b" wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -83,7 +88,7 @@
                                     <Image url="@../../../../assets/images/logo-launcher.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="23.0" layoutY="97.0" text="Önder Launcher.exe" />
+                              <Label layoutX="17.0" layoutY="97.0" text="Canicula Launcher.exe" />
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="destinationAnchor" layoutX="275.0" layoutY="29.0" prefHeight="124.0" prefWidth="151.0">
@@ -102,18 +107,30 @@
             </AnchorPane>
          </children>
       </VBox>
-      <Pane fx:id="downloadProgressPane" visible="false" layoutY="19.0" prefHeight="381.0" prefWidth="600.0" style="-fx-background-color: rgba(0, 0, 0, 0.9);">
+      <Pane fx:id="downloadProgressPane" layoutY="19.0" prefHeight="381.0" prefWidth="600.0" style="-fx-background-color: rgba(0, 0, 0, 0.9);" visible="false">
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="381.0" prefWidth="600.0" spacing="10.0">
                <children>
-                  <ImageView fitHeight="97.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../assets/images/onder_grup_main_2.png" />
-                     </image>
+                  <HBox alignment="CENTER" prefWidth="580.0" spacing="2.0">
+                     <children>
+                        <ImageView fitHeight="97.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../assets/images/logo-sade.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Canicula No-Code Platform" textFill="WHITE">
+                           <font>
+                              <Font name="CeraPro-Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets />
                      </VBox.margin>
-                  </ImageView>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </HBox>
                   <Label fx:id="downloadStartedLabel" prefHeight="110.0" prefWidth="460.0" text="İndirme işlemi başlatıldı. Lütfen indirme bitene kadar programı kapatmayın." textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
                         <Font size="18.0" />
@@ -124,7 +141,7 @@
                         <Label text="Updater Service" textFill="WHITE" />
                      </children>
                   </HBox>
-                  <ProgressBar fx:id="updaterServiceProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
+                  <ProgressBar fx:id="updaterServiceProgress" prefHeight="26.0" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <VBox alignment="CENTER" prefHeight="97.0" prefWidth="300.0">
@@ -136,7 +153,7 @@
                                           <Image url="@../../../../assets/images/logo-launcher.png" />
                                        </image>
                                     </ImageView>
-                                    <Label text="Önder Launcher" textFill="WHITE" />
+                                    <Label text="Canicula Launcher" textFill="WHITE" />
                                  </children>
                               </HBox>
                               <ProgressBar fx:id="launcherProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
@@ -151,7 +168,7 @@
                                           <Image url="@../../../../assets/images/logo-hydraulic.png" />
                                        </image>
                                     </ImageView>
-                                    <Label prefHeight="0.0" prefWidth="143.0" text="Önder Grup Hydraulic Tool" textFill="WHITE" />
+                                    <Label prefHeight="17.0" prefWidth="92.0" text="Hydraulic Tool" textAlignment="CENTER" textFill="WHITE" />
                                  </children>
                               </HBox>
                               <ProgressBar fx:id="hydraulicProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
