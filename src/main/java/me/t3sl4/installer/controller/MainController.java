@@ -229,6 +229,23 @@ public class MainController implements Initializable {
                     startDownloadTask(launcherFileName, launcherProgress, Definitions.LAUNCHER_REPO_NAME, Definitions.PREF_LAUNCHER_KEY);
                     startDownloadTask(hydraulicFileName, hydraulicProgress, Definitions.HYDRAULIC_REPO_NAME, Definitions.PREF_HYDRAULIC_KEY);
 
+                    String[] repoNames = {
+                            Definitions.UPDATER_REPO_NAME,
+                            Definitions.LAUNCHER_REPO_NAME,
+                            Definitions.HYDRAULIC_REPO_NAME
+                    };
+
+                    String[] prefKeys = {
+                            Definitions.PREF_UPDATER_KEY,
+                            Definitions.PREF_LAUNCHER_KEY,
+                            Definitions.PREF_HYDRAULIC_KEY
+                    };
+
+                    for (int i = 0; i < repoNames.length; i++) {
+                        String latestVersion = VersionUtil.getLatestVersion(Definitions.REPO_OWNER, repoNames[i]);
+                        OSUtil.updatePrefData(Definitions.PREF_NODE_NAME, prefKeys[i], latestVersion);
+                    }
+
                     if (os.contains("win")) {
                         String mainPathString = mainPath.getAbsolutePath();
                         FileUtil.createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
@@ -277,8 +294,6 @@ public class MainController implements Initializable {
                             fileName,
                             downloadListener
                     );
-                    String latestVersion = VersionUtil.getLatestVersion(Definitions.REPO_OWNER, repoName);
-                    OSUtil.updatePrefData(Definitions.PREF_NODE_NAME, prefKey, latestVersion);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
