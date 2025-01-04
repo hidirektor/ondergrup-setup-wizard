@@ -277,9 +277,10 @@ public class MainController implements Initializable {
                             fileName,
                             downloadListener
                     );
-                } finally {
                     String latestVersion = VersionUtil.getLatestVersion(Definitions.REPO_OWNER, repoName);
-                    OSUtil.updateLocalVersion(Definitions.PREF_NODE_NAME, prefKey, latestVersion);
+                    OSUtil.updatePrefData(Definitions.PREF_NODE_NAME, prefKey, latestVersion);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
                 return null;
             }
