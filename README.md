@@ -3,13 +3,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/hidirektor/ondergrup-setup-wizard">
-    <img src="readme/onderGrupMain.png" alt="Logo" width="320" height="80">
+    <img src="readme/logo-sade.png" alt="Logo" width="320" height="80">
   </a>
 
-<h3 align="center">Önder Setup Wizard</h3>
+<h3 align="center">Canicula Setup Wizard</h3>
 
   <p align="center">
-    Önder Setup Wizard is installer solution for desktop products that has been developed for Önder Grup.
+    Canicula Setup Wizard is installer solution for desktop products that has been developed for Canicula.
     <br />
     <br />
     <a href="mailto:hidirektor@gmail.com">Report Bug</a>
@@ -43,19 +43,18 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![ScreenShot][product-screenshot]](https://ondergrup.com)
-[![ScreenShot-2][product-screenshot2]](https://ondergrup.com)
-[![ScreenShot-3][product-screenshot3]](https://ondergrup.com)
-[![ScreenShot-4][product-screenshot4]](https://ondergrup.com)
-[![ScreenShot-5][product-screenshot5]](https://ondergrup.com)
+[![ScreenShot][product-screenshot]]
+[![ScreenShot-2][product-screenshot2]]
+[![ScreenShot-3][product-screenshot3]]
+[![ScreenShot-4][product-screenshot4]]
 
-Capabilities of Önder Setup Wizard:
-* Download & Install Önder Launcher
-* Download & Install Önder Grup Hydraulic Tool
-* Create desktop shortcuts for Önder Launcher
-* Create desktop shortcuts for Önder Grup Hydraulic Tool
-* Create auto start service for Önder Launcher
-* Create auto start service for Önder Grup Hydraulic Tool
+Capabilities of Canicula Setup Wizard:
+* Download & Install Canicula Launcher
+* Download & Install Canicula Hydraulic Tool Template
+* Create desktop shortcuts for Canicula Launcher
+* Create desktop shortcuts for Canicula Hydraulic Tool Template
+* Create auto start service for Canicula Launcher
+* Create auto start service for Canicula Hydraulic Tool Template
 
 ### Built With
 
@@ -73,7 +72,7 @@ The technologies used during development are as follows:
 ## Usage
 
 There's two steps to you must follow.
-- [x] Download the latest version of Önder Setup Wizard
+- [x] Download the latest version of Canicula Setup Wizard
 - [x] Then double click and finish the installation :))
 
 [Releases Page](https://github.com/hidirektor/ondergrup-setup-wizard/releases)
@@ -87,9 +86,9 @@ There's two steps to you must follow.
 
 - [x] Minimal UI
 - [x] Download & Install Management
-- [x] Önder Launcher & Önder Grup Hydraulic Tool Support
+- [x] Canicula Launcher & Canicula Hydraulic Tool Template Support
 - [x] Desktop Shortcuts
-- [x] Auto Start Service for both of them Önder Launcher & Önder Grup Hydraulic Tool
+- [x] Auto Start Service for both of them Canicula Launcher & Canicula Hydraulic Tool Template
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -150,7 +149,6 @@ I've included a few of my favorites to kick things off!
 [product-screenshot2]: readme/ss-2.png
 [product-screenshot3]: readme/ss-3.png
 [product-screenshot4]: readme/ss-4.png
-[product-screenshot5]: readme/ss-5.png
 [Next.js]: https://img.shields.io/badge/java-000000?style=for-the-badge&logo=java&logoColor=white
 [Next-url]: https://www.java.com/tr/
 [React.js]: https://img.shields.io/badge/javafx-20232A?style=for-the-badge&logo=javafx&logoColor=61DAFB
