@@ -18,9 +18,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import me.t3sl4.installer.Launcher;
 import me.t3sl4.installer.utils.Utils;
-import me.t3sl4.installer.utils.file.FileUtil;
+import me.t3sl4.util.file.FileUtil;
 import me.t3sl4.installer.utils.system.Definitions;
 import me.t3sl4.util.os.OSUtil;
+import me.t3sl4.util.os.desktop.DesktopUtil;
 import me.t3sl4.util.version.DownloadProgressListener;
 import me.t3sl4.util.version.VersionUtil;
 
@@ -221,9 +222,17 @@ public class MainController implements Initializable {
                     File launcherFile = new File(mainPath, launcherFileName);
                     File hydraulicFile = new File(mainPath, hydraulicFileName);
 
-                    FileUtil.deleteIfExists(updaterFile);
-                    FileUtil.deleteIfExists(launcherFile);
-                    FileUtil.deleteIfExists(hydraulicFile);
+                    if (FileUtil.fileExists(updaterFile.getAbsolutePath())) {
+                        FileUtil.deleteFile(updaterFile.getAbsolutePath());
+                    }
+
+                    if (FileUtil.fileExists(launcherFile.getAbsolutePath())) {
+                        FileUtil.deleteFile(launcherFile.getAbsolutePath());
+                    }
+
+                    if (FileUtil.fileExists(hydraulicFile.getAbsolutePath())) {
+                        FileUtil.deleteFile(hydraulicFile.getAbsolutePath());
+                    }
 
                     startDownloadTask(updaterServiceFileName, updaterServiceProgress, Definitions.UPDATER_REPO_NAME, Definitions.PREF_UPDATER_KEY);
                     startDownloadTask(launcherFileName, launcherProgress, Definitions.LAUNCHER_REPO_NAME, Definitions.PREF_LAUNCHER_KEY);
@@ -231,9 +240,9 @@ public class MainController implements Initializable {
 
                     if (os.contains("win")) {
                         String mainPathString = mainPath.getAbsolutePath();
-                        FileUtil.createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
+                        DesktopUtil.createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
 
-                        FileUtil.addToStartup(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
+                        DesktopUtil.addToStartup(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
                     }
 
                     System.out.println("Kurulum tamamlandı!");
