@@ -79,7 +79,7 @@ public class SceneUtil {
 
         // Başlık ve ikon
         primaryStage.setTitle("Canicula Setup Wizard " + Definitions.getVersion());
-        Image icon = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo.png")));
+        Image icon = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/onderlift-logo-mini-beyaz.png")));
         primaryStage.getIcons().add(icon);
 
         Rectangle clip = new Rectangle();
