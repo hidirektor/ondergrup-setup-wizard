@@ -1,7 +1,7 @@
 package me.t3sl4.installer.utils.system;
 
 public class Definitions {
-    public static final String CURRENT_VERSION = "v2.0.0";
+    public static final String CURRENT_VERSION = "v2.0.2";
 
     public static final String REPO_OWNER = "hidirektor";
     public static final String UPDATER_REPO_NAME = "updater-service-desktop";
