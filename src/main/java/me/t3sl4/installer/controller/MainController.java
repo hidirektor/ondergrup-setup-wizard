@@ -14,12 +14,11 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import me.t3sl4.installer.Launcher;
 import me.t3sl4.installer.utils.Utils;
-import me.t3sl4.util.file.FileUtil;
 import me.t3sl4.installer.utils.system.Definitions;
+import me.t3sl4.util.file.FileUtil;
 import me.t3sl4.util.os.OSUtil;
 import me.t3sl4.util.os.desktop.DesktopUtil;
 import me.t3sl4.util.version.DownloadProgressListener;
@@ -55,19 +54,18 @@ public class MainController implements Initializable {
     private Label mainLabel;
 
     @FXML
-    private Pane downloadProgressPane;
+    private AnchorPane downloadProgressPane;
 
     @FXML
-    private ProgressBar launcherProgress, hydraulicProgress, updaterServiceProgress;
+    private ProgressBar hydraulicProgress, updaterServiceProgress;
 
-    private static ProgressBar launcherProgressBar;
     private static ProgressBar hydraulicProgressBar;
 
     @FXML
     private Label downloadStartedLabel;
 
     @FXML
-    private ImageView launcherLogo, hydraulicLogo;
+    private ImageView hydraulicLogo;
 
     //Ekran büyütüp küçültme
     private boolean stageMaximized = false;
@@ -78,16 +76,14 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Image launcherImage = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo-launcher.png")), 16, 16, true, true);
         Image hydraulicImage = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo-hydraulic.png")), 16, 16, true, true);
+
         Platform.runLater(() -> {
             currentStage = (Stage) userFolderPath.getScene().getWindow();
             userFolderPath.setText(Definitions.mainPath);
-            launcherLogo.setImage(launcherImage);
             hydraulicLogo.setImage(hydraulicImage);
         });
 
-        launcherProgressBar = launcherProgress;
         hydraulicProgressBar = hydraulicProgress;
 
         addHoverEffect(closeIcon, minimizeIcon, expandIcon);
@@ -200,34 +196,26 @@ public class MainController implements Initializable {
                     }
 
                     String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
-                    String launcherFileName, hydraulicFileName, updaterServiceFileName;
+                    String hydraulicFileName, updaterServiceFileName;
 
                     if (os.contains("win")) {
                         updaterServiceFileName = "windows_Updater.exe";
-                        launcherFileName = "windows_Launcher.exe";
                         hydraulicFileName = "windows_Hydraulic.exe";
                     } else if (os.contains("mac")) {
                         updaterServiceFileName = "mac_Updater.jar";
-                        launcherFileName = "mac_Launcher.jar";
                         hydraulicFileName = "mac_Hydraulic.jar";
                     } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
                         updaterServiceFileName = "unix_Updater.jar";
-                        launcherFileName = "unix_Launcher.jar";
                         hydraulicFileName = "unix_Hydraulic.jar";
                     } else {
                         throw new UnsupportedOperationException("Bu işletim sistemi desteklenmiyor: " + os);
                     }
 
                     File updaterFile = new File(mainPath, updaterServiceFileName);
-                    File launcherFile = new File(mainPath, launcherFileName);
                     File hydraulicFile = new File(mainPath, hydraulicFileName);
 
                     if (FileUtil.fileExists(updaterFile.getAbsolutePath())) {
                         FileUtil.deleteFile(updaterFile.getAbsolutePath());
-                    }
-
-                    if (FileUtil.fileExists(launcherFile.getAbsolutePath())) {
-                        FileUtil.deleteFile(launcherFile.getAbsolutePath());
                     }
 
                     if (FileUtil.fileExists(hydraulicFile.getAbsolutePath())) {
@@ -235,14 +223,13 @@ public class MainController implements Initializable {
                     }
 
                     startDownloadTask(updaterServiceFileName, updaterServiceProgress, Definitions.UPDATER_REPO_NAME, Definitions.PREF_UPDATER_KEY);
-                    startDownloadTask(launcherFileName, launcherProgress, Definitions.LAUNCHER_REPO_NAME, Definitions.PREF_LAUNCHER_KEY);
                     startDownloadTask(hydraulicFileName, hydraulicProgress, Definitions.HYDRAULIC_REPO_NAME, Definitions.PREF_HYDRAULIC_KEY);
 
                     if (os.contains("win")) {
                         String mainPathString = mainPath.getAbsolutePath();
-                        DesktopUtil.createDesktopShortcut(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
+                        DesktopUtil.createDesktopShortcut(hydraulicFileName, updaterFile.getAbsolutePath(), hydraulicFile.getAbsolutePath(), mainPathString);
 
-                        DesktopUtil.addToStartup(launcherFileName, updaterFile.getAbsolutePath(), launcherFile.getAbsolutePath(), mainPathString);
+                        DesktopUtil.addToStartup(hydraulicFileName, updaterFile.getAbsolutePath(), hydraulicFile.getAbsolutePath(), mainPathString);
                     }
 
                     System.out.println("Kurulum tamamlandı!");

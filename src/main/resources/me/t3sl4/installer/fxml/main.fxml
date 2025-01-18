@@ -5,9 +5,9 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.t3sl4.installer.controller.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.t3sl4.installer.controller.MainController">
    <children>
-      <VBox prefHeight="400.0" prefWidth="600.0">
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0">
          <children>
             <HBox fx:id="topHBox" prefHeight="21.0" prefWidth="600.0" style="-fx-background-color: #2B2B29;">
                <children>
@@ -59,129 +59,126 @@
             </HBox>
             <AnchorPane prefHeight="382.0" prefWidth="600.0" style="-fx-background-color: #F9F871;">
                <children>
-                  <ImageView fx:id="mainLogo" fitHeight="97.0" fitWidth="200.0" layoutX="137.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../assets/images/logo-sade.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="234.0" layoutY="62.0" text="Canicula No-Code Platform">
-                     <font>
-                        <Font name="CeraPro-Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="mainLabel" layoutX="70.0" layoutY="96.0" prefHeight="110.0" prefWidth="460.0" text="Kurulum sihirbazına hoşgeldiniz. Launcher ve Hydraulic Tool kurulumu için lütfen aşağıdaki ikonu sağ taraftaki klasörün içine sürükleyip bırakın." textAlignment="CENTER" textFill="#170b0b" wrapText="true">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
-                  <AnchorPane layoutX="81.0" layoutY="191.0" prefHeight="181.0" prefWidth="450.0" style="-fx-background-color: rgba(158, 158, 158, 0.5);">
+                  <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ImageView fitHeight="57.0" fitWidth="76.0" layoutX="197.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="mainLogo" fitHeight="120.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../assets/icons/icon_right_arrow.png" />
+                              <Image url="@../../../../assets/images/onderlift-logo.png" />
                            </image>
                         </ImageView>
-                        <AnchorPane fx:id="applicationAnchor" layoutX="20.0" layoutY="29.0" prefHeight="124.0" prefWidth="151.0">
+                        <Label fx:id="mainLabel" prefHeight="110.0" prefWidth="460.0" text="Kurulum sihirbazına hoşgeldiniz. Hydraulic Tool kurulumu için lütfen aşağıdaki ikonu sağ taraftaki klasörün içine sürükleyip bırakın." textAlignment="CENTER" textFill="#170b0b" wrapText="true">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: rgba(158, 158, 158, 0.5);">
                            <children>
-                              <ImageView fitHeight="84.0" fitWidth="134.0" layoutX="33.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../assets/images/logo-launcher.png" />
-                                 </image>
-                              </ImageView>
-                              <Label layoutX="17.0" layoutY="97.0" text="Canicula Launcher.exe" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="destinationAnchor" layoutX="275.0" layoutY="29.0" prefHeight="124.0" prefWidth="151.0">
-                           <children>
-                              <ImageView fitHeight="84.0" fitWidth="134.0" layoutX="34.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../../assets/icons/icon_folder_mac.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="userFolderPath" alignment="CENTER" layoutY="93.0" prefHeight="17.0" prefWidth="151.0" text="../OnderGrup" wrapText="true" />
+                              <HBox alignment="CENTER" fillHeight="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <AnchorPane fx:id="applicationAnchor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                                       <children>
+                                          <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <ImageView fitHeight="85.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../assets/images/onderlift-logo-mini-beyaz.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Hydraulic Tool.exe" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                    <ImageView fitHeight="57.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../../assets/icons/icon_right_arrow.png" />
+                                       </image>
+                                    </ImageView>
+                                    <AnchorPane fx:id="destinationAnchor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                                       <children>
+                                          <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <ImageView fitHeight="85.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../assets/icons/icon_folder_mac.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Label fx:id="userFolderPath" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="../OnderGrup" wrapText="true" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                 </padding>
+                              </HBox>
                            </children>
                         </AnchorPane>
                      </children>
-                  </AnchorPane>
+                  </VBox>
                </children>
             </AnchorPane>
          </children>
       </VBox>
-      <Pane fx:id="downloadProgressPane" layoutY="19.0" prefHeight="381.0" prefWidth="600.0" style="-fx-background-color: rgba(0, 0, 0, 0.9);" visible="false">
+      <AnchorPane fx:id="downloadProgressPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: rgba(0, 0, 0, 0.9);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="381.0" prefWidth="600.0" spacing="10.0">
+            <VBox alignment="CENTER" fillWidth="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox alignment="CENTER" prefWidth="580.0" spacing="2.0">
-                     <children>
-                        <ImageView fitHeight="97.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../assets/images/logo-sade.png" />
-                           </image>
-                        </ImageView>
-                        <Label text="Canicula No-Code Platform" textFill="WHITE">
-                           <font>
-                              <Font name="CeraPro-Bold" size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                     <padding>
-                        <Insets top="10.0" />
-                     </padding>
-                  </HBox>
+                  <ImageView fx:id="mainLogo1" fitHeight="120.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../assets/images/onderlift-logo.png" />
+                     </image>
+                  </ImageView>
                   <Label fx:id="downloadStartedLabel" prefHeight="110.0" prefWidth="460.0" text="İndirme işlemi başlatıldı. Lütfen indirme bitene kadar programı kapatmayın." textAlignment="CENTER" textFill="WHITE" wrapText="true">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
+                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                      <children>
-                        <Label text="Updater Service" textFill="WHITE" />
-                     </children>
-                  </HBox>
-                  <ProgressBar fx:id="updaterServiceProgress" prefHeight="26.0" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="97.0" prefWidth="300.0">
+                        <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
+                              <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="150.0" spacing="6.0">
                                  <children>
-                                    <ImageView fx:id="launcherLogo" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../assets/images/logo-launcher.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label text="Canicula Launcher" textFill="WHITE" />
+                                    <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="hydraulicLogo1" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../assets/images/onderlift-logo-mini-beyaz.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label prefHeight="17.0" prefWidth="92.0" text="Updater Service" textAlignment="CENTER" textFill="WHITE" />
+                                       </children>
+                                    </HBox>
+                                    <ProgressBar fx:id="updaterServiceProgress" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" progress="0.0" stylesheets="@../styling/bar.css" />
                                  </children>
-                              </HBox>
-                              <ProgressBar fx:id="launcherProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="97.0" prefWidth="300.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="30.0" prefWidth="580.0" spacing="10.0">
+                              </VBox>
+                              <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="150.0" spacing="6.0">
                                  <children>
-                                    <ImageView fx:id="hydraulicLogo" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../../assets/images/logo-hydraulic.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label prefHeight="17.0" prefWidth="92.0" text="Hydraulic Tool" textAlignment="CENTER" textFill="WHITE" />
+                                    <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0">
+                                       <children>
+                                          <ImageView fx:id="hydraulicLogo" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../assets/images/logo-hydraulic.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label prefHeight="17.0" prefWidth="92.0" text="Hydraulic Tool" textAlignment="CENTER" textFill="WHITE" />
+                                       </children>
+                                    </HBox>
+                                    <ProgressBar fx:id="hydraulicProgress" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" progress="0.0" stylesheets="@../styling/bar.css" />
                                  </children>
-                              </HBox>
-                              <ProgressBar fx:id="hydraulicProgress" prefWidth="200.0" progress="0.0" stylesheets="@../styling/bar.css" />
+                              </VBox>
                            </children>
-                        </VBox>
+                        </HBox>
                      </children>
-                  </HBox>
+                  </AnchorPane>
                </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
             </VBox>
          </children>
-      </Pane>
+         <padding>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+         </padding>
+      </AnchorPane>
    </children>
 </AnchorPane>
