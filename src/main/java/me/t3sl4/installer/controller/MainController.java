@@ -129,7 +129,7 @@ public class MainController implements Initializable {
             content.putString("Dragging Application Anchor"); // Drag verisi
             dragboard.setContent(content);
 
-            Image resizedImage = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo-launcher.png")), 40, 40, true, true);
+            Image resizedImage = new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/assets/images/logo-hydraulic.png")), 40, 40, true, true);
 
             double offsetX = resizedImage.getWidth() / 2;
             double offsetY = resizedImage.getHeight() / 2;
